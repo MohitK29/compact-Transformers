@@ -40,8 +40,8 @@ def init_parser():
     parser = argparse.ArgumentParser(description='CIFAR quick training script')
 
     # Data args
-    parser.add_argument('data', metavar='DIR',
-                        help='path to dataset')
+    # parser.add_argument('data', metavar='DIR',
+    #                     help='path to dataset')
 
     parser.add_argument('--dataset',
                         type=str.lower,
@@ -150,10 +150,10 @@ def main():
 
     augmentations = transforms.Compose(augmentations)
     train_dataset = datasets.__dict__[args.dataset.upper()](
-        root=args.data, train=True, download=True, transform=augmentations)
+        root='./data', train=True, download=True, transform=augmentations)
 
     val_dataset = datasets.__dict__[args.dataset.upper()](
-        root=args.data, train=False, download=False, transform=transforms.Compose([
+        root='./data', train=False, download=False, transform=transforms.Compose([
             transforms.Resize(img_size),
             transforms.ToTensor(),
             *normalize,
