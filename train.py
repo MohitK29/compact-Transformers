@@ -23,6 +23,7 @@ import logging
 from collections import OrderedDict
 from contextlib import suppress
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 import torch
 import torch.nn as nn
@@ -151,7 +152,7 @@ parser.add_argument('--warmup-lr', type=float, default=0.0001, metavar='LR',
                     help='warmup learning rate (default: 0.0001)')
 parser.add_argument('--min-lr', type=float, default=1e-5, metavar='LR',
                     help='lower lr bound for cyclic schedulers that hit 0 (1e-5)')
-parser.add_argument('--epochs', type=int, default=200, metavar='N',
+parser.add_argument('--epochs', type=int, default=10, metavar='N',
                     help='number of epochs to train (default: 2)')
 parser.add_argument('--epoch-repeats', type=float, default=0., metavar='N',
                     help='epoch repeat multiplier (number of times to repeat dataset epoch per train epoch).')
@@ -301,6 +302,12 @@ def _parse_args():
     # Cache the args as a text string to save them in the output dir later
     args_text = yaml.safe_dump(args.__dict__, default_flow_style=False)
     return args, args_text
+
+
+train_loss_history = []
+train_acc_history = []
+val_loss_history = []
+val_acc_history = []
 
 
 def main():
@@ -495,13 +502,9 @@ def main():
 
     dataset_train = torchvision.datasets.CIFAR10(
     root='./data', train=True, download=True, transform=transform_train)
-    trainloader = torch.utils.data.DataLoader(
-    dataset_train, batch_size=128, shuffle=True, num_workers=2)
 
     dataset_eval = torchvision.datasets.CIFAR10(
     root='./data', train=False, download=True, transform=transform_test)
-    testloader = torch.utils.data.DataLoader(
-    dataset_eval, batch_size=100, shuffle=False, num_workers=2)
 
     # setup mixup / cutmix
     collate_fn = None
@@ -644,10 +647,36 @@ def main():
                 save_metric = eval_metrics[eval_metric]
                 best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
 
+            loss_acc_plot()
     except KeyboardInterrupt:
         pass
     if best_metric is not None:
         _logger.info('*** Best metric: {0} (epoch {1})'.format(best_metric, best_epoch))
+
+def loss_acc_plot():
+    fig1 = plt.figure(figsize=(8, 8))
+    plt.plot(len(train_loss_history), train_loss_history, '-',
+            linewidth=3, label='Train error')
+    plt.plot(len(val_loss_history), val_loss_history, '-',
+            linewidth=3, label='Val error')
+    plt.xlabel('epoch')
+    plt.ylabel('loss')
+    plt.grid(True)
+    plt.legend()
+    plt.savefig('experiment1_loss.png')
+    plt.show()
+
+    fig2 = plt.figure(figsize=(8, 8))
+    plt.plot(len(train_acc_history), train_acc_history, '-',
+            linewidth=3, label='Train accuracy')
+    plt.plot(len(val_acc_history), val_acc_history, '-',
+            linewidth=3, label='Val accuracy')
+    plt.xlabel('epoch')
+    plt.ylabel('acc')
+    plt.grid(True)
+    plt.legend()
+    plt.savefig('experiment1_acc.png')
+    plt.show()
 
 
 def train_one_epoch(
@@ -664,7 +693,9 @@ def train_one_epoch(
     batch_time_m = AverageMeter()
     data_time_m = AverageMeter()
     losses_m = AverageMeter()
-
+    train_loss = 0
+    correct = 0
+    total = 0
     model.train()
 
     end = time.time()
@@ -704,6 +735,12 @@ def train_one_epoch(
 
         if model_ema is not None:
             model_ema.update(model)
+
+        train_loss += loss.item()
+        _, predicted = output.max(1)
+        total += target.size(0)
+        correct += predicted.eq(target).sum().item()
+
 
         torch.cuda.synchronize()
         num_updates += 1
@@ -750,6 +787,11 @@ def train_one_epoch(
 
         end = time.time()
         # end for
+    
+    train_loss = train_loss/len(loader)
+    train_loss_history.append(train_loss)
+    train_acc = (correct/total) * 100
+    train_acc_history.append(train_acc)
 
     if hasattr(optimizer, 'sync_lookahead'):
         optimizer.sync_lookahead()
@@ -762,7 +804,9 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
     losses_m = AverageMeter()
     top1_m = AverageMeter()
     top5_m = AverageMeter()
-
+    val_loss = 0
+    correct = 0
+    total = 0
     model.eval()
 
     end = time.time()
@@ -790,6 +834,11 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
             loss = loss_fn(output, target)
             acc1, acc5 = accuracy(output, target, topk=(1, 5))
 
+            val_loss += loss.item()
+            _, predicted = output.max(1)
+            total += target.size(0)
+            correct += predicted.eq(target).sum().item()
+
             if args.distributed:
                 reduced_loss = reduce_tensor(loss.data, args.world_size)
                 acc1 = reduce_tensor(acc1, args.world_size)
@@ -816,6 +865,10 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
                         log_name, batch_idx, last_idx, batch_time=batch_time_m,
                         loss=losses_m, top1=top1_m, top5=top5_m))
 
+    val_loss = val_loss/len(loader)
+    val_loss_history.append(val_loss)
+    val_acc = (correct/total) * 100
+    val_acc_history.append(val_acc)
     metrics = OrderedDict([('loss', losses_m.avg), ('top1', top1_m.avg), ('top5', top5_m.avg)])
 
     return metrics
