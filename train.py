@@ -304,12 +304,6 @@ def _parse_args():
     return args, args_text
 
 
-train_loss_history = []
-#train_acc_history = []
-val_loss_history = []
-val_acc_history = []
-
-
 def main():
     setup_default_logging()
     args, args_text = _parse_args()
@@ -653,31 +647,10 @@ def main():
     if best_metric is not None:
         _logger.info('*** Best metric: {0} (epoch {1})'.format(best_metric, best_epoch))
 
-def loss_acc_plot():
-    fig1 = plt.figure(figsize=(8, 8))
-    plt.plot(len(train_loss_history), train_loss_history, '-',
-            linewidth=3, label='Train error')
-    plt.plot(len(val_loss_history), val_loss_history, '-',
-            linewidth=3, label='Val error')
-    plt.xlabel('epoch')
-    plt.ylabel('loss')
-    plt.grid(True)
-    plt.legend()
-    plt.savefig('experiment1_loss.png')
-    plt.show()
-
-    fig2 = plt.figure(figsize=(8, 8))
-    # plt.plot(len(train_acc_history), train_acc_history, '-',
-    #         linewidth=3, label='Train accuracy')
-    plt.plot(len(val_acc_history), val_acc_history, '-',
-            linewidth=3, label='Val accuracy')
-    plt.xlabel('epoch')
-    plt.ylabel('acc')
-    plt.grid(True)
-    plt.legend()
-    plt.savefig('experiment1_acc.png')
-    plt.show()
-
+train_loss_history = []
+#train_acc_history = []
+val_loss_history = []
+val_acc_history = []
 
 def train_one_epoch(
         epoch, model, loader, optimizer, loss_fn, args,
@@ -785,6 +758,7 @@ def train_one_epoch(
         end = time.time()
         # end for
     train_loss_history.append(losses_m.avg)
+    print(train_loss_history)
     # train_acc_history.append(top1_m.avg)
 
     if hasattr(optimizer, 'sync_lookahead'):
@@ -859,6 +833,30 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
 
     return metrics
 
+def loss_acc_plot():
+    fig1 = plt.figure(figsize=(8, 8))
+    plt.plot(range(310), train_loss_history, '-',
+            linewidth=3, label='Train error')
+    plt.plot(range(310), val_loss_history, '-',
+            linewidth=3, label='Val error')
+    plt.xlabel('epoch')
+    plt.ylabel('loss')
+    plt.grid(True)
+    plt.legend()
+    plt.savefig('experiment1_loss.png')
+    plt.show()
+
+    fig2 = plt.figure(figsize=(8, 8))
+    # plt.plot(len(train_acc_history), train_acc_history, '-',
+    #         linewidth=3, label='Train accuracy')
+    plt.plot(range(310), val_acc_history, '-',
+            linewidth=3, label='Val accuracy')
+    plt.xlabel('epoch')
+    plt.ylabel('acc')
+    plt.grid(True)
+    plt.legend()
+    plt.savefig('experiment1_acc.png')
+    plt.show()
 
 if __name__ == '__main__':
     main()
