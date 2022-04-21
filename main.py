@@ -84,13 +84,13 @@ def init_parser():
                         choices=['learnable', 'sine', 'none'],
                         default='learnable', dest='positional_embedding')
 
-    parser.add_argument('--conv-layers', default=2, type=int,
+    parser.add_argument('--conv_layers', default=1, type=int,
                         help='number of convolutional layers (cct only)')
 
-    parser.add_argument('--conv-size', default=3, type=int,
+    parser.add_argument('--conv_size', default=3, type=int,
                         help='convolution kernel size (cct only)')
 
-    parser.add_argument('--patch-size', default=4, type=int,
+    parser.add_argument('--patch_size', default=4, type=int,
                         help='image patch size (vit and cvt only)')
 
     parser.add_argument('--disable-cos', action='store_true',
