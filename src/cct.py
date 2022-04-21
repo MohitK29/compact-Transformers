@@ -238,7 +238,6 @@ def cct_7_3x1_32(pretrained=False, progress=False,
     print(args)
     print(kwargs)
     return cct_7('cct_7_3x1_32', pretrained, progress,
-                 kernel_size=3, n_conv_layers=1,
                  img_size=img_size, positional_embedding=positional_embedding,
                  num_classes=num_classes,
                  *args, **kwargs)
