@@ -305,7 +305,7 @@ def _parse_args():
 
 
 train_loss_history = []
-train_acc_history = []
+#train_acc_history = []
 val_loss_history = []
 val_acc_history = []
 
@@ -667,8 +667,8 @@ def loss_acc_plot():
     plt.show()
 
     fig2 = plt.figure(figsize=(8, 8))
-    plt.plot(len(train_acc_history), train_acc_history, '-',
-            linewidth=3, label='Train accuracy')
+    # plt.plot(len(train_acc_history), train_acc_history, '-',
+    #         linewidth=3, label='Train accuracy')
     plt.plot(len(val_acc_history), val_acc_history, '-',
             linewidth=3, label='Val accuracy')
     plt.xlabel('epoch')
@@ -693,8 +693,8 @@ def train_one_epoch(
     batch_time_m = AverageMeter()
     data_time_m = AverageMeter()
     losses_m = AverageMeter()
-    top1_m = AverageMeter()
-    top5_m = AverageMeter()
+    # top1_m = AverageMeter()
+    # top5_m = AverageMeter()
 
     model.train()
 
@@ -714,7 +714,7 @@ def train_one_epoch(
         with amp_autocast():
             output = model(input)
             loss = loss_fn(output, target)
-            acc1, acc5 = accuracy(output, target, topk=(1, 5))
+            # acc1, acc5 = accuracy(output, target, topk=(1, 5))
         if not args.distributed:
             losses_m.update(loss.item(), input.size(0))
 
@@ -736,8 +736,8 @@ def train_one_epoch(
         if model_ema is not None:
             model_ema.update(model)
 
-        top1_m.update(acc1.item(), output.size(0))
-        top5_m.update(acc5.item(), output.size(0))
+        # top1_m.update(acc1.item(), output.size(0))
+        # top5_m.update(acc5.item(), output.size(0))
 
         torch.cuda.synchronize()
         num_updates += 1
@@ -785,7 +785,7 @@ def train_one_epoch(
         end = time.time()
         # end for
     train_loss_history.append(losses_m.avg)
-    train_acc_history.append(top1_m.avg)
+    # train_acc_history.append(top1_m.avg)
 
     if hasattr(optimizer, 'sync_lookahead'):
         optimizer.sync_lookahead()
