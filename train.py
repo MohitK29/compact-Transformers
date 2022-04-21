@@ -647,7 +647,7 @@ def main():
                 save_metric = eval_metrics[eval_metric]
                 best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
 
-            loss_acc_plot()
+        loss_acc_plot()
     except KeyboardInterrupt:
         pass
     if best_metric is not None:
