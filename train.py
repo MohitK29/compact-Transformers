@@ -494,11 +494,11 @@ def main():
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
     ])
 
-    dataset_train = torchvision.datasets.CIFAR10(
-    root='./data', train=True, download=True, transform=transform_train)
+    dataset_train = torchvision.datasets.Flowers102(
+    root='./data', split = 'train', download=True, transform=transform_train)
 
-    dataset_eval = torchvision.datasets.CIFAR10(
-    root='./data', train=False, download=True, transform=transform_test)
+    dataset_eval = torchvision.datasets.Flowers102(
+    root='./data', split = 'val', download=True, transform=transform_test)
 
     # setup mixup / cutmix
     collate_fn = None
@@ -826,8 +826,8 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
                         log_name, batch_idx, last_idx, batch_time=batch_time_m,
                         loss=losses_m, top1=top1_m, top5=top5_m))
 
-    val_loss_history.append(losses_m.avg)
-    val_acc_history.append(top1_m.avg)
+        val_loss_history.append(losses_m.avg)
+        val_acc_history.append(top1_m.avg)
 
     metrics = OrderedDict([('loss', losses_m.avg), ('top1', top1_m.avg), ('top5', top5_m.avg)])
 
@@ -843,7 +843,7 @@ def loss_acc_plot():
     plt.ylabel('loss')
     plt.grid(True)
     plt.legend()
-    plt.savefig('experiment1_loss.png')
+    plt.savefig('experiment3_loss.png')
     plt.show()
 
     fig2 = plt.figure(figsize=(8, 8))
@@ -855,7 +855,7 @@ def loss_acc_plot():
     plt.ylabel('acc')
     plt.grid(True)
     plt.legend()
-    plt.savefig('experiment1_acc.png')
+    plt.savefig('experiment3_acc.png')
     plt.show()
 
 if __name__ == '__main__':
