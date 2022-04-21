@@ -235,8 +235,6 @@ def cct_7_3x1_32(pretrained=False, progress=False,
                  img_size=32, positional_embedding='learnable', num_classes=10,
                  *args, **kwargs):
 
-    print(args)
-    print(kwargs)
     return cct_7('cct_7_3x1_32', pretrained, progress,
                  img_size=img_size, positional_embedding=positional_embedding,
                  num_classes=num_classes,

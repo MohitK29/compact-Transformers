@@ -693,9 +693,9 @@ def train_one_epoch(
     batch_time_m = AverageMeter()
     data_time_m = AverageMeter()
     losses_m = AverageMeter()
-    train_loss = 0
-    correct = 0
-    total = 0
+    top1_m = AverageMeter()
+    top5_m = AverageMeter()
+
     model.train()
 
     end = time.time()
@@ -714,7 +714,7 @@ def train_one_epoch(
         with amp_autocast():
             output = model(input)
             loss = loss_fn(output, target)
-
+            acc1, acc5 = accuracy(output, target, topk=(1, 5))
         if not args.distributed:
             losses_m.update(loss.item(), input.size(0))
 
@@ -736,11 +736,8 @@ def train_one_epoch(
         if model_ema is not None:
             model_ema.update(model)
 
-        train_loss += loss.item()
-        _, predicted = output.max(1)
-        total += target.size(0)
-        correct += predicted.eq(target).sum().item()
-
+        top1_m.update(acc1.item(), output.size(0))
+        top5_m.update(acc5.item(), output.size(0))
 
         torch.cuda.synchronize()
         num_updates += 1
@@ -787,11 +784,8 @@ def train_one_epoch(
 
         end = time.time()
         # end for
-    
-    train_loss = train_loss/len(loader)
-    train_loss_history.append(train_loss)
-    train_acc = (correct/total) * 100
-    train_acc_history.append(train_acc)
+    train_loss_history.append(losses_m.avg)
+    train_acc_history.append(top1_m.avg)
 
     if hasattr(optimizer, 'sync_lookahead'):
         optimizer.sync_lookahead()
@@ -804,9 +798,7 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
     losses_m = AverageMeter()
     top1_m = AverageMeter()
     top5_m = AverageMeter()
-    val_loss = 0
-    correct = 0
-    total = 0
+
     model.eval()
 
     end = time.time()
@@ -834,11 +826,6 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
             loss = loss_fn(output, target)
             acc1, acc5 = accuracy(output, target, topk=(1, 5))
 
-            val_loss += loss.item()
-            _, predicted = output.max(1)
-            total += target.size(0)
-            correct += predicted.eq(target).sum().item()
-
             if args.distributed:
                 reduced_loss = reduce_tensor(loss.data, args.world_size)
                 acc1 = reduce_tensor(acc1, args.world_size)
@@ -865,10 +852,9 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
                         log_name, batch_idx, last_idx, batch_time=batch_time_m,
                         loss=losses_m, top1=top1_m, top5=top5_m))
 
-    val_loss = val_loss/len(loader)
-    val_loss_history.append(val_loss)
-    val_acc = (correct/total) * 100
-    val_acc_history.append(val_acc)
+    val_loss_history.append(losses_m.avg)
+    val_acc_history.append(top1_m.avg)
+
     metrics = OrderedDict([('loss', losses_m.avg), ('top1', top1_m.avg), ('top5', top5_m.avg)])
 
     return metrics
