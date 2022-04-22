@@ -1,0 +1,66 @@
+Error processing line 1 of /home/mmk9369/.local/lib/python3.8/site-packages/vision-1.0.0-py3.8-nspkg.pth:
+
+  Traceback (most recent call last):
+    File "/share/apps/anaconda3/2020.07/lib/python3.8/site.py", line 169, in addpackage
+      exec(line)
+    File "<string>", line 1, in <module>
+    File "<frozen importlib._bootstrap>", line 553, in module_from_spec
+  AttributeError: 'NoneType' object has no attribute 'loader'
+
+Remainder of file ignored
+Error processing line 1 of /home/mmk9369/.local/lib/python3.8/site-packages/vision-1.0.0-py3.8-nspkg.pth:
+
+  Traceback (most recent call last):
+    File "/share/apps/anaconda3/2020.07/lib/python3.8/site.py", line 169, in addpackage
+      exec(line)
+    File "<string>", line 1, in <module>
+    File "<frozen importlib._bootstrap>", line 553, in module_from_spec
+  AttributeError: 'NoneType' object has no attribute 'loader'
+
+Remainder of file ignored
+Error processing line 1 of /home/mmk9369/.local/lib/python3.8/site-packages/vision-1.0.0-py3.8-nspkg.pth:
+
+  Traceback (most recent call last):
+    File "/share/apps/anaconda3/2020.07/lib/python3.8/site.py", line 169, in addpackage
+      exec(line)
+    File "<string>", line 1, in <module>
+    File "<frozen importlib._bootstrap>", line 553, in module_from_spec
+  AttributeError: 'NoneType' object has no attribute 'loader'
+
+Remainder of file ignored
+Error processing line 1 of /home/mmk9369/.local/lib/python3.8/site-packages/vision-1.0.0-py3.8-nspkg.pth:
+
+  Traceback (most recent call last):
+    File "/scratch/mmk9369/envs_dirs/deep/lib/python3.8/site.py", line 169, in addpackage
+      exec(line)
+    File "<string>", line 1, in <module>
+    File "<frozen importlib._bootstrap>", line 553, in module_from_spec
+  AttributeError: 'NoneType' object has no attribute 'loader'
+
+Remainder of file ignored
+Training with a single process on 1 GPUs.
+Model cct_14_7x2_224 created, param count:22367273
+Data processing configuration for current model + dataset:
+	input_size: (3, 224, 224)
+	interpolation: bicubic
+	mean: (0.485, 0.456, 0.406)
+	std: (0.229, 0.224, 0.225)
+	crop_pct: 0.9
+Using native Torch AMP. Training in mixed precision.
+Scheduled epochs: 310
+Traceback (most recent call last):
+  File "train.py", line 866, in <module>
+    main()
+  File "train.py", line 478, in main
+    dataset_train = create_dataset(
+  File "/scratch/mmk9369/envs_dirs/deep/lib/python3.8/site-packages/timm/data/dataset_factory.py", line 124, in create_dataset
+    ds = ImageNet(split=split, **torch_kwargs)
+  File "/scratch/mmk9369/envs_dirs/deep/lib/python3.8/site-packages/torchvision/datasets/imagenet.py", line 46, in __init__
+    self.parse_archives()
+  File "/scratch/mmk9369/envs_dirs/deep/lib/python3.8/site-packages/torchvision/datasets/imagenet.py", line 59, in parse_archives
+    parse_devkit_archive(self.root)
+  File "/scratch/mmk9369/envs_dirs/deep/lib/python3.8/site-packages/torchvision/datasets/imagenet.py", line 140, in parse_devkit_archive
+    _verify_archive(root, file, md5)
+  File "/scratch/mmk9369/envs_dirs/deep/lib/python3.8/site-packages/torchvision/datasets/imagenet.py", line 96, in _verify_archive
+    raise RuntimeError(msg.format(file, root))
+RuntimeError: The archive ILSVRC2012_devkit_t12.tar.gz is not present in the root directory or is corrupted. You need to download it externally and place it in ./imagenet.
