@@ -494,11 +494,11 @@ def main():
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
     ])
 
-    dataset_train = torchvision.datasets.CIFAR100(
-    root='./data', train = True, download=True, transform=transform_train)
+    dataset_train = torchvision.datasets.ImageNet(
+    root='./data', split = 'train', transform=transform_train)
 
     dataset_eval = torchvision.datasets.CIFAR100(
-    root='./data', train = False, download=True, transform=transform_test)
+    root='./data', split = 'val', transform=transform_test)
 
     # setup mixup / cutmix
     collate_fn = None
@@ -758,7 +758,6 @@ def train_one_epoch(
         end = time.time()
         # end for
     train_loss_history.append(losses_m.avg)
-    print(train_loss_history)
     # train_acc_history.append(top1_m.avg)
 
     if hasattr(optimizer, 'sync_lookahead'):
@@ -843,7 +842,7 @@ def loss_acc_plot():
     plt.ylabel('loss')
     plt.grid(True)
     plt.legend()
-    plt.savefig('experiment4_loss.png')
+    plt.savefig('experiment5_loss.png')
     plt.show()
 
     fig2 = plt.figure(figsize=(8, 8))
@@ -855,7 +854,7 @@ def loss_acc_plot():
     plt.ylabel('acc')
     plt.grid(True)
     plt.legend()
-    plt.savefig('experiment4_acc.png')
+    plt.savefig('experiment5_acc.png')
     plt.show()
 
 if __name__ == '__main__':
