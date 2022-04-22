@@ -6,7 +6,7 @@
 #SBATCH --time=5:00:00
 #SBATCH --mem=16GB
 #SBATCH --job-name=results
-#SBATCH --output=exp2.out
+#SBATCH --output=cifar10.out
 #SBATCH --gres=gpu:1
 
 

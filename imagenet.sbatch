@@ -6,7 +6,7 @@
 #SBATCH --time=20:00:00
 #SBATCH --mem=16GB
 #SBATCH --job-name=results
-#SBATCH --output=exp1.out
+#SBATCH --output=imagenet.out
 #SBATCH --gres=gpu:1
 
 
