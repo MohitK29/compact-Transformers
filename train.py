@@ -494,11 +494,11 @@ def main():
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
     ])
 
-    dataset_train = torchvision.datasets.Flowers102(
-    root='./data', split = 'train', download=True, transform=transform_train)
+    dataset_train = torchvision.datasets.CIFAR10(
+    root='./data', train = True, download=True, transform=transform_train)
 
-    dataset_eval = torchvision.datasets.Flowers102(
-    root='./data', split = 'val', download=True, transform=transform_test)
+    dataset_eval = torchvision.datasets.CIFAR10(
+    root='./data', train = False, download=True, transform=transform_test)
 
     # setup mixup / cutmix
     collate_fn = None
