@@ -256,7 +256,7 @@ parser.add_argument('--checkpoint-hist', type=int, default=10, metavar='N',
                     help='number of checkpoints to keep (default: 10)')
 parser.add_argument('-j', '--workers', type=int, default=4, metavar='N',
                     help='how many training processes to use (default: 1)')
-parser.add_argument('--save-images', action='store_true', default=True,
+parser.add_argument('--save-images', action='store_true', default=False,
                     help='save images of input bathes every log interval for debugging')
 parser.add_argument('--amp', action='store_true', default=False,
                     help='use NVIDIA Apex AMP or Native AMP for mixed precision training')
@@ -494,10 +494,10 @@ def main():
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
     ])
 
-    dataset_train = torchvision.datasets.CIFAR10(
+    dataset_train = torchvision.datasets.CIFAR100(
     root='./data', train = True, download=True, transform=transform_train)
 
-    dataset_eval = torchvision.datasets.CIFAR10(
+    dataset_eval = torchvision.datasets.CIFAR100(
     root='./data', train = False, download=True, transform=transform_test)
 
     # setup mixup / cutmix
@@ -843,7 +843,7 @@ def loss_acc_plot():
     plt.ylabel('loss')
     plt.grid(True)
     plt.legend()
-    plt.savefig('experiment3_loss.png')
+    plt.savefig('experiment4_loss.png')
     plt.show()
 
     fig2 = plt.figure(figsize=(8, 8))
@@ -855,7 +855,7 @@ def loss_acc_plot():
     plt.ylabel('acc')
     plt.grid(True)
     plt.legend()
-    plt.savefig('experiment3_acc.png')
+    plt.savefig('experiment4_acc.png')
     plt.show()
 
 if __name__ == '__main__':
