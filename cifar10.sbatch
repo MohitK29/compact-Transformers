@@ -3,7 +3,7 @@
 #SBATCH --nodes=1                       
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=16                
-#SBATCH --time=5:00:00
+#SBATCH --time=25:00:00
 #SBATCH --mem=16GB
 #SBATCH --job-name=results
 #SBATCH --output=cifar10.out
