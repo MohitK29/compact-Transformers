@@ -494,11 +494,11 @@ def main():
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
     ])
 
-    dataset_train = torchvision.datasets.ImageNet(
-    root='./data', split = 'train', transform=transform_train)
+    dataset_train = torchvision.datasets.Flowers102(
+    root='./flowers102', split = 'train', download=True, transform=transform_train)
 
-    dataset_eval = torchvision.datasets.ImageNet(
-    root='./data', split = 'val', transform=transform_test)
+    dataset_eval = torchvision.datasets.Flowers102(
+    root='./flowers102', split = 'val', download=True, transform=transform_test)
 
     # setup mixup / cutmix
     collate_fn = None
@@ -842,7 +842,7 @@ def loss_acc_plot():
     plt.ylabel('loss')
     plt.grid(True)
     plt.legend()
-    plt.savefig('experiment_imgnet_loss.png')
+    plt.savefig('experiment_flowers102_loss.png')
     plt.show()
 
     fig2 = plt.figure(figsize=(8, 8))
@@ -854,7 +854,7 @@ def loss_acc_plot():
     plt.ylabel('acc')
     plt.grid(True)
     plt.legend()
-    plt.savefig('experiment_imgnet_acc.png')
+    plt.savefig('experiment_flowers102_acc.png')
     plt.show()
 
 if __name__ == '__main__':
