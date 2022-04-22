@@ -152,7 +152,7 @@ parser.add_argument('--warmup-lr', type=float, default=0.0001, metavar='LR',
                     help='warmup learning rate (default: 0.0001)')
 parser.add_argument('--min-lr', type=float, default=1e-5, metavar='LR',
                     help='lower lr bound for cyclic schedulers that hit 0 (1e-5)')
-parser.add_argument('--epochs', type=int, default=1200, metavar='N',
+parser.add_argument('--epochs', type=int, default=10, metavar='N',
                     help='number of epochs to train (default: 2)')
 parser.add_argument('--epoch-repeats', type=float, default=0., metavar='N',
                     help='epoch repeat multiplier (number of times to repeat dataset epoch per train epoch).')
@@ -352,20 +352,22 @@ def main():
 
     random_seed(args.seed, args.rank)
 
-    model = create_model(
-        args.model,
-        pretrained=args.pretrained,
-        num_classes=args.num_classes,
-        drop_rate=args.drop,
-        drop_connect_rate=args.drop_connect,  # DEPRECATED, use drop_path
-        drop_path_rate=args.drop_path,
-        drop_block_rate=args.drop_block,
-        global_pool=args.gp,
-        bn_tf=args.bn_tf,
-        bn_momentum=args.bn_momentum,
-        bn_eps=args.bn_eps,
-        scriptable=args.torchscript,
-        checkpoint_path=args.initial_checkpoint)
+    # model = create_model(
+    #     args.model,
+    #     pretrained=args.pretrained,
+    #     num_classes=args.num_classes,
+    #     drop_rate=args.drop,
+    #     drop_connect_rate=args.drop_connect,  # DEPRECATED, use drop_path
+    #     drop_path_rate=args.drop_path,
+    #     drop_block_rate=args.drop_block,
+    #     global_pool=args.gp,
+    #     bn_tf=args.bn_tf,
+    #     bn_momentum=args.bn_momentum,
+    #     bn_eps=args.bn_eps,
+    #     scriptable=args.torchscript,
+    #     checkpoint_path=args.initial_checkpoint)
+
+    model = cvt_7_4_32(arch='custom', pretrained=False, progress=False, kernel_size=5, n_conv_layers=3)
     if args.num_classes is None:
         assert hasattr(model, 'num_classes'), 'Model must have `num_classes` attr if not set on cmd line/config.'
         args.num_classes = model.num_classes  # FIXME handle model default vs config num_classes more elegantly
@@ -847,7 +849,7 @@ def loss_acc_plot():
     plt.ylabel('loss')
     plt.grid(True)
     plt.legend()
-    plt.savefig('cifar10_1500_epochs_loss.png')
+    plt.savefig('cifar10_cvt_loss.png')
     plt.show()
 
     fig2 = plt.figure(figsize=(8, 8))
@@ -859,7 +861,7 @@ def loss_acc_plot():
     plt.ylabel('acc')
     plt.grid(True)
     plt.legend()
-    plt.savefig('cifar10_1500_epochs_acc.png')
+    plt.savefig('cifar10_cvt_acc.png')
     plt.show()
 
 if __name__ == '__main__':
