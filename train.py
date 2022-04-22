@@ -77,8 +77,8 @@ parser.add_argument('-c', '--config', default='', type=str, metavar='FILE',
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 
 # Dataset / Model parameters
-parser.add_argument('data_dir', default= './data', metavar='DIR',
-                    help='path to dataset')
+# parser.add_argument('data_dir', default= './data', metavar='DIR',
+#                     help='path to dataset')
 parser.add_argument('--dataset', '-d', metavar='NAME', default='',
                     help='dataset type (default: ImageFolder/ImageTar if empty)')
 parser.add_argument('--train-split', metavar='NAME', default='train',
@@ -475,30 +475,30 @@ def main():
         _logger.info('Scheduled epochs: {}'.format(num_epochs))
 
     # create the train and eval datasets
-    dataset_train = create_dataset(
-        args.dataset,
-        root=args.data_dir, split=args.train_split, is_training=True,
-        batch_size=args.batch_size, repeats=args.epoch_repeats)
-    dataset_eval = create_dataset(
-        args.dataset, root=args.data_dir, split=args.val_split, is_training=False, batch_size=args.batch_size)
+    # dataset_train = create_dataset(
+    #     args.dataset,
+    #     root=args.data_dir, split=args.train_split, is_training=True,
+    #     batch_size=args.batch_size, repeats=args.epoch_repeats)
+    # dataset_eval = create_dataset(
+    #     args.dataset, root=args.data_dir, split=args.val_split, is_training=False, batch_size=args.batch_size)
 
-    # transform_train = transforms.Compose([
-    #     transforms.RandomCrop(32, padding=4),
-    #     transforms.RandomHorizontalFlip(),
-    #     transforms.ToTensor(),
-    #     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-    # ])
+    transform_train = transforms.Compose([
+        transforms.RandomCrop(32, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+    ])
 
-    # transform_test = transforms.Compose([
-    #     transforms.ToTensor(),
-    #     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-    # ])
+    transform_test = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+    ])
 
-    # dataset_train = torchvision.datasets.ImageNet(
-    # root='./data', split = 'train', transform=transform_train)
+    dataset_train = torchvision.datasets.ImageNet(
+    root='./data', split = 'train', transform=transform_train)
 
-    # dataset_eval = torchvision.datasets.CIFAR100(
-    # root='./data', split = 'val', transform=transform_test)
+    dataset_eval = torchvision.datasets.ImageNet(
+    root='./data', split = 'val', transform=transform_test)
 
     # setup mixup / cutmix
     collate_fn = None
@@ -842,7 +842,7 @@ def loss_acc_plot():
     plt.ylabel('loss')
     plt.grid(True)
     plt.legend()
-    plt.savefig('experiment5_loss.png')
+    plt.savefig('experiment_imgnet_loss.png')
     plt.show()
 
     fig2 = plt.figure(figsize=(8, 8))
@@ -854,7 +854,7 @@ def loss_acc_plot():
     plt.ylabel('acc')
     plt.grid(True)
     plt.legend()
-    plt.savefig('experiment5_acc.png')
+    plt.savefig('experiment_imgnet_acc.png')
     plt.show()
 
 if __name__ == '__main__':

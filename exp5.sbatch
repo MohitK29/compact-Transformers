@@ -14,4 +14,4 @@ module purge
 module load anaconda3/2020.07
 eval "$(conda shell.bash hook)"
 conda activate deep
-python train.py -c configs/datasets/imagenet.yml --model cct_14_7x2_224 --dataset ImageNet
+python train.py -c configs/datasets/imagenet.yml --dataset ImageNet --model cct_14_7x2_224 ./data
