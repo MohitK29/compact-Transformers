@@ -367,7 +367,8 @@ def main():
     #     scriptable=args.torchscript,
     #     checkpoint_path=args.initial_checkpoint)
 
-    model = cvt_7_4_32(arch='custom', pretrained=False, progress=False, kernel_size=5, n_conv_layers=3)
+    model = cct_7_7x2_224_sine(arch='custom', pretrained=False, progress=False)
+
     if args.num_classes is None:
         assert hasattr(model, 'num_classes'), 'Model must have `num_classes` attr if not set on cmd line/config.'
         args.num_classes = model.num_classes  # FIXME handle model default vs config num_classes more elegantly
@@ -496,12 +497,12 @@ def main():
        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
     ])
 
-    dataset_train = torchvision.datasets.CIFAR10(
-    root='./cifar10', train=True, download=True, transform=transform_train)
+    dataset_train = torchvision.datasets.Flowers102(
+    root='./flowers102', split = 'train', download=True, transform=transform_train)
     #loader_train = torch.utils.data.DataLoader(dataset_train, batch_size=128, shuffle=True, num_workers=2)
 
-    dataset_eval = torchvision.datasets.CIFAR10(
-    root='./cifar10', train=False, download=True, transform=transform_test)
+    dataset_eval = torchvision.datasets.Flowers102(
+    root='./flowers102', split = 'val', download=True, transform=transform_test)
     #loader_eval = torch.utils.data.DataLoader(dataset_eval, batch_size=100, shuffle=False, num_workers=2)
 
     # setup mixup / cutmix
@@ -841,27 +842,27 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
 
 def loss_acc_plot():
     fig1 = plt.figure(figsize=(8, 8))
-    plt.plot(range(1500), train_loss_history, '-',
+    plt.plot(range(310), train_loss_history, '-',
             linewidth=3, label='Train error')
-    plt.plot(range(1500), val_loss_history, '-',
+    plt.plot(range(310), val_loss_history, '-',
             linewidth=3, label='Val error')
     plt.xlabel('epoch')
     plt.ylabel('loss')
     plt.grid(True)
     plt.legend()
-    plt.savefig('cifar10_cvt_loss.png')
+    plt.savefig('flowers102_cct_loss.png')
     plt.show()
 
     fig2 = plt.figure(figsize=(8, 8))
     # plt.plot(len(train_acc_history), train_acc_history, '-',
     #         linewidth=3, label='Train accuracy')
-    plt.plot(range(1500), val_acc_history, '-',
+    plt.plot(range(310), val_acc_history, '-',
             linewidth=3, label='Val accuracy')
     plt.xlabel('epoch')
     plt.ylabel('acc')
     plt.grid(True)
     plt.legend()
-    plt.savefig('cifar10_cvt_acc.png')
+    plt.savefig('flowers102_cct_acc.png')
     plt.show()
 
 if __name__ == '__main__':
