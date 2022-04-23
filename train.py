@@ -71,8 +71,8 @@ _logger = logging.getLogger('train')
 # The first arg parser parses out only the --config argument, this argument is used to
 # load a yaml file containing key-values that override the defaults for the main parser below
 config_parser = parser = argparse.ArgumentParser(description='Training Config', add_help=False)
-# parser.add_argument('-c', '--config', default='', type=str, metavar='FILE',
-#                     help='YAML config file specifying default arguments')
+parser.add_argument('-c', '--config', default='', type=str, metavar='FILE',
+                    help='YAML config file specifying default arguments')
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 
@@ -152,7 +152,7 @@ parser.add_argument('--warmup-lr', type=float, default=0.0001, metavar='LR',
                     help='warmup learning rate (default: 0.0001)')
 parser.add_argument('--min-lr', type=float, default=1e-5, metavar='LR',
                     help='lower lr bound for cyclic schedulers that hit 0 (1e-5)')
-parser.add_argument('--epochs', type=int, default=310, metavar='N',
+parser.add_argument('--epochs', type=int, default=10, metavar='N',
                     help='number of epochs to train (default: 2)')
 parser.add_argument('--epoch-repeats', type=float, default=0., metavar='N',
                     help='epoch repeat multiplier (number of times to repeat dataset epoch per train epoch).')
@@ -290,10 +290,10 @@ parser.add_argument('--log-wandb', action='store_true', default=False,
 def _parse_args():
     # Do we have a config file to parse?
     args_config, remaining = config_parser.parse_known_args()
-    # if args_config.config:
-    #     with open(args_config.config, 'r') as f:
-    #         cfg = yaml.safe_load(f)
-    #         parser.set_defaults(**cfg)
+    if args_config.config:
+        with open(args_config.config, 'r') as f:
+            cfg = yaml.safe_load(f)
+            parser.set_defaults(**cfg)
 
     # The main arg parser parses the rest of the args, the usual
     # defaults will have been overridden if config file specified.
@@ -367,8 +367,7 @@ def main():
     #     scriptable=args.torchscript,
     #     checkpoint_path=args.initial_checkpoint)
 
-    model = cct.cct_14(pretrained=False, progress=False, num_classes=10)
-
+    model = cct_7_3x1_32(arch='custom', pretrained=False, progress=False, kernel_size=5, n_conv_layers=3)
     if args.num_classes is None:
         assert hasattr(model, 'num_classes'), 'Model must have `num_classes` attr if not set on cmd line/config.'
         args.num_classes = model.num_classes  # FIXME handle model default vs config num_classes more elegantly
@@ -485,26 +484,25 @@ def main():
     # dataset_eval = create_dataset(
     #     args.dataset, root=args.data_dir, split=args.val_split, is_training=False, batch_size=args.batch_size)
 
-    # transform_train = transforms.Compose([
-    #    transforms.RandomCrop(32, padding=4),
-    #    transforms.RandomHorizontalFlip(),
-    #    transforms.ToTensor(),
-    #    transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-    # ])
+    transform_train = transforms.Compose([
+       transforms.RandomCrop(32, padding=4),
+       transforms.RandomHorizontalFlip(),
+       transforms.ToTensor(),
+       transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+    ])
 
-    # transform_test = transforms.Compose([
-    #    transforms.ToTensor(),
-    #    transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-    # ])
+    transform_test = transforms.Compose([
+       transforms.ToTensor(),
+       transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+    ])
 
-    dataset_train = torchvision.datasets.FashionMNIST(
-    root='./FashionMNIST', train=True, download=True, transform=torchvision.transforms.ToTensor())
+    dataset_train = torchvision.datasets.CIFAR10(
+    root='./cifar10', train=True, download=True, transform=transform_train)
+    #loader_train = torch.utils.data.DataLoader(dataset_train, batch_size=128, shuffle=True, num_workers=2)
 
-    dataset_eval = torchvision.datasets.FashionMNIST(
-    root='./FashionMNIST', train=False, download=True, transform=torchvision.transforms.ToTensor())
-
-    loader_train = torch.utils.data.DataLoader(dataset_train,batch_size=64,shuffle=True)
-    loader_eval = torch.utils.data.DataLoader(dataset_eval,batch_size=64,shuffle=False)
+    dataset_eval = torchvision.datasets.CIFAR10(
+    root='./cifar10', train=False, download=True, transform=transform_test)
+    #loader_eval = torch.utils.data.DataLoader(dataset_eval, batch_size=100, shuffle=False, num_workers=2)
 
     # setup mixup / cutmix
     collate_fn = None
@@ -530,48 +528,48 @@ def main():
     if args.no_aug or not train_interpolation:
         train_interpolation = data_config['interpolation']
 
-    # loader_train = create_loader(
-    #     dataset_train,
-    #     input_size=data_config['input_size'],
-    #     batch_size=args.batch_size,
-    #     is_training=True,
-    #     use_prefetcher=args.prefetcher,
-    #     no_aug=args.no_aug,
-    #     re_prob=args.reprob,
-    #     re_mode=args.remode,
-    #     re_count=args.recount,
-    #     re_split=args.resplit,
-    #     scale=args.scale,
-    #     ratio=args.ratio,
-    #     hflip=args.hflip,
-    #     vflip=args.vflip,
-    #     color_jitter=args.color_jitter,
-    #     auto_augment=args.aa,
-    #     num_aug_splits=num_aug_splits,
-    #     interpolation=train_interpolation,
-    #     mean=data_config['mean'],
-    #     std=data_config['std'],
-    #     num_workers=args.workers,
-    #     distributed=args.distributed,
-    #     collate_fn=collate_fn,
-    #     pin_memory=args.pin_mem,
-    #     use_multi_epochs_loader=args.use_multi_epochs_loader
-    # )
+    loader_train = create_loader(
+        dataset_train,
+        input_size=data_config['input_size'],
+        batch_size=args.batch_size,
+        is_training=True,
+        use_prefetcher=args.prefetcher,
+        no_aug=args.no_aug,
+        re_prob=args.reprob,
+        re_mode=args.remode,
+        re_count=args.recount,
+        re_split=args.resplit,
+        scale=args.scale,
+        ratio=args.ratio,
+        hflip=args.hflip,
+        vflip=args.vflip,
+        color_jitter=args.color_jitter,
+        auto_augment=args.aa,
+        num_aug_splits=num_aug_splits,
+        interpolation=train_interpolation,
+        mean=data_config['mean'],
+        std=data_config['std'],
+        num_workers=args.workers,
+        distributed=args.distributed,
+        collate_fn=collate_fn,
+        pin_memory=args.pin_mem,
+        use_multi_epochs_loader=args.use_multi_epochs_loader
+    )
 
-    # loader_eval = create_loader(
-    #     dataset_eval,
-    #     input_size=data_config['input_size'],
-    #     batch_size=args.validation_batch_size_multiplier * args.batch_size,
-    #     is_training=False,
-    #     use_prefetcher=args.prefetcher,
-    #     interpolation=data_config['interpolation'],
-    #     mean=data_config['mean'],
-    #     std=data_config['std'],
-    #     num_workers=args.workers,
-    #     distributed=args.distributed,
-    #     crop_pct=data_config['crop_pct'],
-    #     pin_memory=args.pin_mem,
-    # )
+    loader_eval = create_loader(
+        dataset_eval,
+        input_size=data_config['input_size'],
+        batch_size=args.validation_batch_size_multiplier * args.batch_size,
+        is_training=False,
+        use_prefetcher=args.prefetcher,
+        interpolation=data_config['interpolation'],
+        mean=data_config['mean'],
+        std=data_config['std'],
+        num_workers=args.workers,
+        distributed=args.distributed,
+        crop_pct=data_config['crop_pct'],
+        pin_memory=args.pin_mem,
+    )
 
     # setup loss function
     if args.jsd:
@@ -681,9 +679,8 @@ def train_one_epoch(
     end = time.time()
     last_idx = len(loader) - 1
     num_updates = epoch * len(loader)
-    for batch_idx, data in enumerate(loader):
+    for batch_idx, (input, target) in enumerate(loader):
         last_batch = batch_idx == last_idx
-        input, target = data
         data_time_m.update(time.time() - end)
         if not args.prefetcher:
             input, target = input.cuda(), target.cuda()
@@ -786,9 +783,8 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
     end = time.time()
     last_idx = len(loader) - 1
     with torch.no_grad():
-        for batch_idx, data in enumerate(loader):
+        for batch_idx, (input, target) in enumerate(loader):
             last_batch = batch_idx == last_idx
-            input, target = data
             if not args.prefetcher:
                 input = input.cuda()
                 target = target.cuda()
@@ -853,7 +849,7 @@ def loss_acc_plot():
     plt.ylabel('loss')
     plt.grid(True)
     plt.legend()
-    plt.savefig('FashionMNIST_cct_loss.png')
+    plt.savefig('cifar10_cct_loss.png')
     plt.show()
 
     fig2 = plt.figure(figsize=(8, 8))
@@ -865,7 +861,7 @@ def loss_acc_plot():
     plt.ylabel('acc')
     plt.grid(True)
     plt.legend()
-    plt.savefig('FashionMNIST_cct_acc.png')
+    plt.savefig('cifar10_cct_acc.png')
     plt.show()
 
 if __name__ == '__main__':
