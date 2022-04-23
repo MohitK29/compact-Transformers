@@ -71,8 +71,8 @@ _logger = logging.getLogger('train')
 # The first arg parser parses out only the --config argument, this argument is used to
 # load a yaml file containing key-values that override the defaults for the main parser below
 config_parser = parser = argparse.ArgumentParser(description='Training Config', add_help=False)
-parser.add_argument('-c', '--config', default='', type=str, metavar='FILE',
-                    help='YAML config file specifying default arguments')
+# parser.add_argument('-c', '--config', default='', type=str, metavar='FILE',
+#                     help='YAML config file specifying default arguments')
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 
@@ -152,7 +152,7 @@ parser.add_argument('--warmup-lr', type=float, default=0.0001, metavar='LR',
                     help='warmup learning rate (default: 0.0001)')
 parser.add_argument('--min-lr', type=float, default=1e-5, metavar='LR',
                     help='lower lr bound for cyclic schedulers that hit 0 (1e-5)')
-parser.add_argument('--epochs', type=int, default=10, metavar='N',
+parser.add_argument('--epochs', type=int, default=310, metavar='N',
                     help='number of epochs to train (default: 2)')
 parser.add_argument('--epoch-repeats', type=float, default=0., metavar='N',
                     help='epoch repeat multiplier (number of times to repeat dataset epoch per train epoch).')
@@ -290,10 +290,10 @@ parser.add_argument('--log-wandb', action='store_true', default=False,
 def _parse_args():
     # Do we have a config file to parse?
     args_config, remaining = config_parser.parse_known_args()
-    if args_config.config:
-        with open(args_config.config, 'r') as f:
-            cfg = yaml.safe_load(f)
-            parser.set_defaults(**cfg)
+    # if args_config.config:
+    #     with open(args_config.config, 'r') as f:
+    #         cfg = yaml.safe_load(f)
+    #         parser.set_defaults(**cfg)
 
     # The main arg parser parses the rest of the args, the usual
     # defaults will have been overridden if config file specified.
@@ -367,7 +367,7 @@ def main():
     #     scriptable=args.torchscript,
     #     checkpoint_path=args.initial_checkpoint)
 
-    model = cct_7_7x2_224_sine(arch='custom', pretrained=False, progress=False)
+    model = cct_14(pretrained=False, progress=False, num_classes=10)
 
     if args.num_classes is None:
         assert hasattr(model, 'num_classes'), 'Model must have `num_classes` attr if not set on cmd line/config.'
@@ -497,12 +497,12 @@ def main():
        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
     ])
 
-    dataset_train = torchvision.datasets.Flowers102(
-    root='./flowers102', split = 'train', download=True, transform=transform_train)
+    dataset_train = torchvision.datasets.FashionMNIST(
+    root='./FashionMNIST', train=True, download=True, transform=transform_train)
     #loader_train = torch.utils.data.DataLoader(dataset_train, batch_size=128, shuffle=True, num_workers=2)
 
-    dataset_eval = torchvision.datasets.Flowers102(
-    root='./flowers102', split = 'val', download=True, transform=transform_test)
+    dataset_eval = torchvision.datasets.FashionMNIST(
+    root='./FashionMNIST', train=False, download=True, transform=transform_test)
     #loader_eval = torch.utils.data.DataLoader(dataset_eval, batch_size=100, shuffle=False, num_workers=2)
 
     # setup mixup / cutmix
@@ -850,7 +850,7 @@ def loss_acc_plot():
     plt.ylabel('loss')
     plt.grid(True)
     plt.legend()
-    plt.savefig('flowers102_cct_loss.png')
+    plt.savefig('FashionMNIST_cct_loss.png')
     plt.show()
 
     fig2 = plt.figure(figsize=(8, 8))
@@ -862,7 +862,7 @@ def loss_acc_plot():
     plt.ylabel('acc')
     plt.grid(True)
     plt.legend()
-    plt.savefig('flowers102_cct_acc.png')
+    plt.savefig('FashionMNIST_cct_acc.png')
     plt.show()
 
 if __name__ == '__main__':
