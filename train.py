@@ -367,7 +367,7 @@ def main():
     #     scriptable=args.torchscript,
     #     checkpoint_path=args.initial_checkpoint)
 
-    model = cct_7_3x1_32(arch='custom', pretrained=False, progress=False, kernel_size=5, n_conv_layers=3)
+    model = cct_7_3x1_32(pretrained=False, progress=False, kernel_size=5, n_conv_layers=3)
     if args.num_classes is None:
         assert hasattr(model, 'num_classes'), 'Model must have `num_classes` attr if not set on cmd line/config.'
         args.num_classes = model.num_classes  # FIXME handle model default vs config num_classes more elegantly
