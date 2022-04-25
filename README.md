@@ -11,7 +11,6 @@
 <h3> 1. File structure </h3>
 CONFIGS – This folder contains helper codes. <br><br>
 MODELS – This folder contains different models which are required for training. <br><br>
-OUTPUT/TRAIN – This folder contains results of CCT on CIFAR-10 and CIFAR-100. <br><br>
 PLOTS – This folder contains plots for train/test loss and accuracy. <br><br>
 SRC – This folder contains necessary codes for CVT, CCT and ViTs. <br><br>
 UTILS – This folder contains various miscellanous code files. <br><br>
