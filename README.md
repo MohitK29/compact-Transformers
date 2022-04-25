@@ -38,8 +38,8 @@ Managing environments — https://sites.google.com/a/nyu.edu/nyu-hpc/documentati
 <li>Step 2: For installing requirements
 Run the following commands to set up the environment: <br><br>
 pip install -r requirements.txt <br><br>
-<li>Step 3: Run the following SLURM command by running the following command ‘bestmodel.sbatch’: <br>
-sbatch bestmodel.sbatch <br><br>
+<li>Step 3: Run the following SLURM command by running the following command ‘<dataset>.sbatch’ or VITGAN.sbatch: <br>
+sbatch <datset>.sbatch <br><br>
 
 
 
