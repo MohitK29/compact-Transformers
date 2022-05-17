@@ -70,7 +70,7 @@ def get_parser():
                         help="Adam beta1 parameter")
     parser.add_argument("--beta2", type=float, default=0.99,
                         help="Adam beta2 parameter")
-    parser.add_argument("--epochs", type=int, default=400,
+    parser.add_argument("--epochs", type=int, default=100,
                         help="Number of epocks")
     parser.add_argument("--lambda_bCR_real", type=int, default=10,
                         help="lambda_bCR_real")
@@ -126,27 +126,7 @@ lambda_lossD_noise = params.lambda_lossD_noise
 lambda_lossD_history = params.lambda_lossD_history
 lambda_diversity_penalty = params.lambda_diversity_penalty
 
-experiment_folder_name = f'runs/lr-{lr}_\
-lr_dis-{lr_dis}_\
-bias-{bias}_\
-demod-{demodulation}_\
-sir_n_layer-{siren_hidden_layers}_\
-w_mod-{weight_modulation}_\
-patch_s-{patch_size}_\
-st_mlp_l-{style_mlp_layers}_\
-hid_size-{hidden_size}_\
-comb_patch_emb-{combine_patch_embeddings}_\
-sln_par_s-{sln_paremeter_size}_\
-dis_type-{discriminator_type}_\
-gen_type-{generator_type}_\
-n_head-{num_heads}_\
-depth-{depth}_\
-drop_p-{dropout_p}_\
-l_bCR_r-{lambda_bCR_real}_\
-l_bCR_f-{lambda_bCR_fake}_\
-l_D_noise-{lambda_lossD_noise}_\
-l_D_his-{lambda_lossD_history}\
-'
+experiment_folder_name = f'vitgan1'
 writer = SummaryWriter(log_dir=experiment_folder_name)
 
 wandb.init(project='ViTGAN-pytorch')
