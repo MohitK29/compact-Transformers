@@ -62,7 +62,9 @@ sbatch <datset>.sbatch <br><br>
 
   
 <h2> RESULTS </h2>
+  <br>
 ![ezgif com-gif-maker (3)](https://user-images.githubusercontent.com/47019139/168940633-b8cfcf47-74fa-4de5-bceb-70a675a4ea35.gif)
+  <br><br>
 
 
   <h2>REFERENCES:</h2>
