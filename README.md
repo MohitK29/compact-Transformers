@@ -52,12 +52,12 @@ sbatch <datset>.sbatch <br><br>
  
 
   
-GIF of images from ViTGAN
+GIF of images from ViTGAN <br>
 ![image](https://user-images.githubusercontent.com/47019139/168940903-b9e3328a-7d77-4042-a7e2-113d5b76c742.gif) 
   
   <br><br>
   
-GIF of images from CVTGAN
+GIF of images from CVTGAN <br>
 ![image](https://user-images.githubusercontent.com/47019139/168952636-1eafaedd-f580-44c1-9da5-a27f6674ad9c.gif)
 
   <h2>REFERENCES:</h2>
