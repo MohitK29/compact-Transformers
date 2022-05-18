@@ -10,36 +10,26 @@
 <h3> ABOUT THE REPO: </h3>
 <h3> 1. File structure </h3>
 CONFIGS – This folder contains helper codes. <br><br>
-DNNLIB – <br><br>
-METRICS – <br><br>
+METRICS – This folder contains the code for loss functions of CVTGANs. <br><br>
 MODELS – This folder contains different models which are required for training. <br><br>
-MODELS_SEARCH – <br><br>
+MODELS_SEARCH – This folder contains CVTGANs - Generator and Discriminator models. <br><br>
 PLOTS – This folder contains plots for train/test loss and accuracy. <br><br>
 SRC – This folder contains necessary codes for CVT, CCT and ViTs. <br><br>
-TORCH_UTILS – <br><br>
 UTILS – This folder contains various miscellanous code files. <br><br>
-UTILSCVT – <br><br>
+UTILSCVT – This folder contains helper functions for CVTGANs. <br><br>
 
 VITGAN.sbatch – sbatch file for running experiment for ViTGAN <br><br>
-VitGanTrain.py – <br><br>
-adamw.py – <br><br>
-animation.gif – <br><br>
-celeba.py – <br><br>
+VitGanTrain.py – Code for training the ViTGAN. <br><br>
+animation.gif – This is an example GIF of output images generated from CVTGANs Generator. <br><br>
 cifar10.sbatch – sbatch file for running CCT/CVT experiment on CIFAR-10 dataset. <br><br>
 cifar100.sbatch – sbatch file for running CCT/CVT experiment on CIFAR-100 dataset. <br><br>
-cifar_train.py – <br><br>
-cvtGanConfig.py – <br><br>
-cvtGanGenerate.sbatch – <br><br>
-cvtGanTrain.py – <br><br>
-cvtGanTrain.sbatch – <br><br>
-cvtGanUtils.py – <br><br>
-cvtTrain.py – <br><br>
-cvtgan_cifar10.yaml – <br><br>
-datasets.py – <br><br>
-functions.py – <br><br>
-main.py – This python file contains the code being called in SLURM jobs. <br><br>
-requirements.txt - This text file contains all the dependencies for the CONDA environment. <br><br>
-train.py – This python file contains the code for training the model. <br><br>
+cvtGanConfig.py – Config file for CVTGAN. <br><br>
+cvtGanTrain.py – Code for training the CVTGAN. <br><br>
+cvtGanTrain.sbatch – Sbatch file for training CVTGAN submitted as a SLURM job. <br><br>
+cvtTrain.py – Code for training CVT for image classification. <br><br>
+datasets.py – Contains initialization of datasets. <br><br>
+functions.py – Helper functions for CVT GANs. <br><br>
+vitgan.jpg - Sample image generated from ViTGAN. <br><br>
 
 -------------------------------------------------------------------------------------------------------- 
 <h3> 2. How to clone </h3>
@@ -81,5 +71,6 @@ sbatch <datset>.sbatch <br><br>
 
 <li>[7] A. Hassani, S. Walton, N. Shah, A. Abuduweili, J. Li, and H. Shi, “Escaping the big data paradigm with compact transformers,” arXiv preprint arXiv:2104.05704, 2021.
   
-<li>[8] “Compact vision transformer gans,” https://github.com/SHI-Labs/Compact-Transformers.
-  
+<li>[8] “Compact vision transformer” https://github.com/SHI-Labs/Compact-Transformers.
+ 
+<li>[9] TransGAN: Two Pure Transformers Can Make One Strong GAN - https://proceedings.neurips.cc/paper/2021/file/7c220a2091c26a7f5e9f1cfb099511e3-Paper.pdf https://github.com/VITA-Group/TransGAN
