@@ -50,15 +50,15 @@ pip install -r requirements.txt <br><br>
 <li>Step 3: Run the following SLURM command by running the following command ‘<dataset>.sbatch’ or VITGAN.sbatch: <br>
 sbatch <datset>.sbatch <br><br>
  
-  ![ezgif com-gif-maker (2)]()
-
 
   
 GIF of images from ViTGAN
-![image](https://user-images.githubusercontent.com/47019139/168940903-b9e3328a-7d77-4042-a7e2-113d5b76c742.gif)
+![image](https://user-images.githubusercontent.com/47019139/168940903-b9e3328a-7d77-4042-a7e2-113d5b76c742.gif) 
+  
+  <br><br>
   
 GIF of images from CVTGAN
-![image]([https://user-images.githubusercontent.com/47019139/168952636-1eafaedd-f580-44c1-9da5-a27f6674ad9c.gif])
+![image](https://user-images.githubusercontent.com/47019139/168952636-1eafaedd-f580-44c1-9da5-a27f6674ad9c.gif)
 
   <h2>REFERENCES:</h2>
 <li>[1] Y. LeCun, B. Boser, J. S. Denker, D. Henderson, R. E. Howard, W. Hubbard, and L. D. Jackel, “Backpropagation applied to handwritten zip code recognition,” Neural computation, vol. 1, no. 4, pp. 541–551, 1989.
