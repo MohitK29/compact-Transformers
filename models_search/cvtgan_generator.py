@@ -201,7 +201,7 @@ class Generator(nn.Module):
 
         self.dim = embed_dim
         sequence_length = self.sequence_length
-        self.seq_pool = True
+        self.seq_pool = False
         self.num_tokens = 0
 
         if not self.seq_pool:
@@ -287,24 +287,21 @@ class Generator(nn.Module):
             latent_size = z.size(-1)
             z = (z/z.norm(dim=-1, keepdim=True) * (latent_size ** 0.5))
         x = self.l1(z).view(-1, self.bottom_width ** 2, self.embed_dim)
-        x = x + self.positional_emb.to(x.get_device())
+        x = x + self.pos_embed[0].to(x.get_device())
 
         B = x.size()
         H, W = self.bottom_width, self.bottom_width
 
-        x = self.dropout(x)
 
         x = self.blocks(x)
 
         for index, blk in enumerate(self.upsample_blocks):
             x, H, W = pixel_upsample(x, H, W)
-            x = x + self.positional_emb2.to(x.get_device())
+            x = x + self.pos_embed[index+1].to(x.get_device())
             x = blk(x)
-        TT()
+            
         if self.seq_pool:
             x = torch.matmul(F.softmax(self.attention_pool(x), dim=1).transpose(-1, -2), x).squeeze(-2)
-        else:
-            x = x[:, 0]
 
         output = self.deconv(x.permute(0, 2, 1).view(-1, self.embed_dim//16, H, W))
         return output

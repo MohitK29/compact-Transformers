@@ -15,7 +15,4 @@ module load anaconda3/2020.07
 eval "$(conda shell.bash hook)"
 conda activate deep
 CUDA_VISIBLE_DEVICES=0 \
-python cvtGanTrain.py \
-  -cfg=cvtgan_cifar10.yaml \
-  -dataset=cifar10 \
-  -batch_size=32 \
+python cvtgan_cifar_train.py

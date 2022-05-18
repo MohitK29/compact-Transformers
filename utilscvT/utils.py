@@ -25,7 +25,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageColor
 @torch.no_grad()
 def make_grid(
     tensor: Union[torch.Tensor, List[torch.Tensor]],
-    nrow: int = 8,
+    nrow: int = 4,
     padding: int = 2,
     normalize: bool = False,
     value_range: Optional[Tuple[int, int]] = None,

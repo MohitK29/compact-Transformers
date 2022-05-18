@@ -186,8 +186,8 @@ def main_worker(gpu, ngpus_per_node, args):
     train_loader = dataset.train
     #train_sampler = dataset.train_sampler
     print(len(train_loader))
-    if args.max_iter:
-        args.max_epoch = np.ceil(args.max_iter * args.n_critic / len(train_loader))
+    # if args.max_iter:
+    #     args.max_epoch = np.ceil(args.max_iter * args.n_critic / len(train_loader))
 
     # initial
     fixed_z = torch.cuda.FloatTensor(np.random.normal(0, 1, (100, args.latent_dim)))
