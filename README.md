@@ -2,9 +2,8 @@
 
 <h3> <u> OVERVIEW: </u> </h3>
 
-![image](https://user-images.githubusercontent.com/47019139/165015471-1932b983-33e0-4696-ae9a-93eae9107276.png)
 
-![image](https://user-images.githubusercontent.com/47019139/165015480-37f19579-1c6e-4683-92c6-a730054aadcf.png)
+![Architecture](https://user-images.githubusercontent.com/47019139/168947537-c36ee817-8490-4d84-a072-dd0d54112b9c.png)
 
 
 -------------------------------------------------------------------------------------------------------- 
