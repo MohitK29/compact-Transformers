@@ -51,7 +51,7 @@ git clone https://github.com/MohitK29/compact-transformers.git <br>
 -------------------------------------------------------------------------------------------------------- 
 <h3> 3. How to run the code </h3>
 
-<h4> Train the model: How to train the model using SLURM jobs on HPC <br><br>
+<h4> Train the model: How to train the model using SLURM jobs on HPC </h4><br><br>
 <li>Step 1: Create a conda environment <br>
 Check out the following link to do so:  <br>
 Managing environments — https://sites.google.com/a/nyu.edu/nyu-hpc/documentation/prince/packages/conda-environments <br><br>
@@ -60,9 +60,11 @@ Run the following commands to set up the environment: <br><br>
 pip install -r requirements.txt <br><br>
 <li>Step 3: Run the following SLURM command by running the following command ‘<dataset>.sbatch’ or VITGAN.sbatch: <br>
 sbatch <datset>.sbatch <br><br>
-  </li>
-  <h2>RESULTS: </h2>
-  <br>
+ 
+  
+
+  
+  
 ![image](https://user-images.githubusercontent.com/47019139/168940903-b9e3328a-7d77-4042-a7e2-113d5b76c742.gif)
 
   <h2>REFERENCES:</h2>
