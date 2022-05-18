@@ -61,7 +61,7 @@ pip install -r requirements.txt <br><br>
 sbatch <datset>.sbatch <br><br>
 
   <h2> RESULTS </h2>
-  ![ezgif com-gif-maker (3)](https://user-images.githubusercontent.com/47019139/168940452-4ca9d98b-14b2-488f-a759-2addf6600f1d.gif)
+  ![animation](https://user-images.githubusercontent.com/47019139/168940452-4ca9d98b-14b2-488f-a759-2addf6600f1d.gif)
 
 
   <h2>REFERENCES:</h2>
