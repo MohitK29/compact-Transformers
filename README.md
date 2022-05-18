@@ -6,17 +6,38 @@
 
 ![image](https://user-images.githubusercontent.com/47019139/165015480-37f19579-1c6e-4683-92c6-a730054aadcf.png)
 
+
 -------------------------------------------------------------------------------------------------------- 
 <h3> ABOUT THE REPO: </h3>
 <h3> 1. File structure </h3>
 CONFIGS – This folder contains helper codes. <br><br>
+DNNLIB – <br><br>
+METRICS – <br><br>
 MODELS – This folder contains different models which are required for training. <br><br>
+MODELS_SEARCH – <br><br>
 PLOTS – This folder contains plots for train/test loss and accuracy. <br><br>
 SRC – This folder contains necessary codes for CVT, CCT and ViTs. <br><br>
+TORCH_UTILS – <br><br>
 UTILS – This folder contains various miscellanous code files. <br><br>
+UTILSCVT – <br><br>
+
 VITGAN.sbatch – sbatch file for running experiment for ViTGAN <br><br>
+VitGanTrain.py – <br><br>
+adamw.py – <br><br>
+animation.gif – <br><br>
+celeba.py – <br><br>
 cifar10.sbatch – sbatch file for running CCT/CVT experiment on CIFAR-10 dataset. <br><br>
 cifar100.sbatch – sbatch file for running CCT/CVT experiment on CIFAR-100 dataset. <br><br>
+cifar_train.py – <br><br>
+cvtGanConfig.py – <br><br>
+cvtGanGenerate.sbatch – <br><br>
+cvtGanTrain.py – <br><br>
+cvtGanTrain.sbatch – <br><br>
+cvtGanUtils.py – <br><br>
+cvtTrain.py – <br><br>
+cvtgan_cifar10.yaml – <br><br>
+datasets.py – <br><br>
+functions.py – <br><br>
 main.py – This python file contains the code being called in SLURM jobs. <br><br>
 requirements.txt - This text file contains all the dependencies for the CONDA environment. <br><br>
 train.py – This python file contains the code for training the model. <br><br>
@@ -30,7 +51,7 @@ git clone https://github.com/MohitK29/compact-transformers.git <br>
 -------------------------------------------------------------------------------------------------------- 
 <h3> 3. How to run the code </h3>
 
-<h4> Train the model: How to train the model using SLURM jobs on HPC <br><br>
+<h4> Train the model: How to train the model using SLURM jobs on HPC </h4><br><br>
 <li>Step 1: Create a conda environment <br>
 Check out the following link to do so:  <br>
 Managing environments — https://sites.google.com/a/nyu.edu/nyu-hpc/documentation/prince/packages/conda-environments <br><br>
@@ -39,8 +60,12 @@ Run the following commands to set up the environment: <br><br>
 pip install -r requirements.txt <br><br>
 <li>Step 3: Run the following SLURM command by running the following command ‘<dataset>.sbatch’ or VITGAN.sbatch: <br>
 sbatch <datset>.sbatch <br><br>
+ 
+  
 
-
+  
+  
+![image](https://user-images.githubusercontent.com/47019139/168940903-b9e3328a-7d77-4042-a7e2-113d5b76c742.gif)
 
   <h2>REFERENCES:</h2>
 <li>[1] Y. LeCun, B. Boser, J. S. Denker, D. Henderson, R. E. Howard, W. Hubbard, and L. D. Jackel, “Backpropagation applied to handwritten zip code recognition,” Neural computation, vol. 1, no. 4, pp. 541–551, 1989.
