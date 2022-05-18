@@ -61,7 +61,7 @@ pip install -r requirements.txt <br><br>
 <li>Step 3: Run the following SLURM command by running the following command ‘<dataset>.sbatch’ or VITGAN.sbatch: <br>
 sbatch <datset>.sbatch <br><br>
   </li>
-  
+  <h2>RESULTS: </h2>
 ![image](https://user-images.githubusercontent.com/47019139/168940903-b9e3328a-7d77-4042-a7e2-113d5b76c742.gif)
 
   <h2>REFERENCES:</h2>
